@@ -1,40 +1,28 @@
-import "./App.css";
-import { useEffect, useState } from "react";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Dashboard from './pages/Dashboard';
+import Students from './components/Students';
+import Teachers from './components/Teachers';
+import Groups from './components/Groups';
+import Faculties from './components/Faculties';
+import Departments from './components/Departments';
 
-function App() {
-  const [data, setData] = useState(null); // Изменено начальное состояние на null
-  const [loading, setLoading] = useState(true); // Добавлен индикатор загрузки
-
-  useEffect(() => {
-    fetch("https://localhost:7097/api/Students/GetAll")
-      .then((response) => response.json()) // Парсинг JSON
-      .then((data) => {
-        setData(data);
-        setLoading(false); // Данные загружены
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        setLoading(false); // Ошибка загрузки
-      });
-  }, []); // Добавлен пустой массив зависимостей
-
-  if (loading) {
-    return <div className="App">Loading...</div>; // Индикация загрузки
-  }
-
-  if (!data) {
-    return <div className="App">No data available</div>; // Индикация отсутствия данных
-  }
-
+const App = () => {
   return (
-    <div className="App">
-      {data.map((student) => (
-        <div key={student.id}>
-          {student.name} - {student.age}
-        </div>
-      ))}
-    </div>
+    <Router>
+      <Navbar />
+      <div className="container mx-auto p-4">
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/students" element={<Students />} />
+          <Route path="/teachers" element={<Teachers />} />
+          <Route path="/groups" element={<Groups />} />
+          <Route path="/faculties" element={<Faculties />} />
+          <Route path="/departments" element={<Departments />} />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
